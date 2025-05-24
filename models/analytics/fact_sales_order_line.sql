@@ -1,9 +1,13 @@
 WITH
   fact_sales_order_line__source AS (
     SELECT *
-    FROM `vit-lam-data.wide_world_importers.sales__order_lines`
+    FROM `vit-lam-data.wide_world_importers.sales__order_lines` sales_line
+      LEFT JOIN `vit-lam-data.wide_world_importers.sales__order_lines` sales_header ON sales_line.order_id = sales_header.order_id
 )
+SELECT *
+FROM fact_sales_order_line__source
 
+/*
 , fact_sales_order_line__rename_column AS (
   SELECT
     order_line_id AS sales_order_line_key
@@ -36,3 +40,4 @@ SELECT
   , unit_price
   , gross_mount
 FROM fact_sales_order_line__calculate_measure
+*/
