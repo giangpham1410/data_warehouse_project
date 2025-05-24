@@ -18,5 +18,7 @@ WITH
   FROM dim_customer__rename_column
 )
 
-SELECT *
+SELECT
+  customer_key
+  , customer_name
 FROM dim_customer__cast_type
