@@ -27,4 +27,5 @@ SELECT
   , product_key
   , quantity
   , unit_price
+  , quantity * unit_price AS gross_amount
 FROM fact_sales_order_line__cast_type
