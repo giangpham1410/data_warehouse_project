@@ -12,7 +12,7 @@ WITH
     , unit_price
   FROM fact_sales_order_line__source
 )
-/*
+
 , fact_sales_order_line__cast_type AS (
     SELECT
       CAST(sales_order_line_key AS INTEGER) AS sales_order_line_key
@@ -21,10 +21,10 @@ WITH
       , CAST(unit_price AS NUMERIC) AS unit_price
     FROM fact_sales_order_line__rename_column
 )
-*/
+
 SELECT
   sales_order_line_key
   , product_key
   , quantity
   , unit_price
-FROM fact_sales_order_line__rename_column
+FROM fact_sales_order_line__cast_type
