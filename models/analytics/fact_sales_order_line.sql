@@ -27,8 +27,20 @@ WITH
     FROM fact_sales_order_line__rename_column
 )
 
-SELECT *
-FROM fact_sales_order_line__cast_type
+, fact_sales_order_line__caculate_measure AS (
+    SELECT
+      *
+      , quantity * unit_price AS gross_mount
+    FROM fact_sales_order_line__cast_type
+)
+SELECT
+  sales_order_line_key
+  , customer_key
+  , product_key
+  , quantity
+  , unit_price
+  , gross_mount
+FROM fact_sales_order_line__caculate_measure
 
 
 /*
