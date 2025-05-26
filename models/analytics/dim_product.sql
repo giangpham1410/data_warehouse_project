@@ -23,11 +23,11 @@ WITH
 )
 
 SELECT
-  product.product_key
-  , product.product_name
-  , product.brand_name
-  , product.supplier_key
-  , supplier.supplier_name
-FROM dim_product__cast_type product
-  LEFT JOIN `data-warehouse-project-459212.wide_world_importers_dwh.dim_supplier` supplier
-    ON product.supplier_key = supplier.supplier_key
+  dim_product.product_key
+  , dim_product.product_name
+  , dim_product.brand_name
+  , dim_product.supplier_key
+  , dim_supplier.supplier_name
+FROM dim_product__cast_type dim_product
+  LEFT JOIN {{ ref('dim_supplier') }} dim_supplier
+    ON dim_product.supplier_key = dim_supplier.supplier_key
