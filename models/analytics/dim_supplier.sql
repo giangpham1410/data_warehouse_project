@@ -22,4 +22,4 @@ WITH
 SELECT
   supplier_key
   , supplier_name
-FROM dim_supplier__rename_column
+FROM dim_supplier__cast_type
