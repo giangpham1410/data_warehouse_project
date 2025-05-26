@@ -39,5 +39,6 @@ SELECT
   , fact_so_line.unit_price
   , fact_so_line.gross_mount
 FROM fact_sales_order_line__caculate_measure fact_so_line
-  LEFT JOIN `data-warehouse-project-459212.wide_world_importers_dwh_staging.stg_fact_sales_order` fact_so_header 
+  LEFT JOIN {{ ref('stg_fact_sales_order') }} fact_so_header
   ON fact_so_line.sales_order_key = fact_so_header.sales_order_key
+
