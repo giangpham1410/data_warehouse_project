@@ -11,5 +11,14 @@ WITH
   FROM dim_buying_group__source
 )
 
-SELECT *
-FROM dim_buying_group__rename_column
+, dim_buying_group__cast_type AS (
+  SELECT
+    CAST(buying_group_key AS INTEGER) AS buying_group_key
+    , CAST(buying_group_name AS STRING) buying_group_name
+  FROM dim_buying_group__rename_column
+)
+
+SELECT
+  buying_group_key
+  , buying_group_name
+FROM dim_buying_group__cast_type
