@@ -30,7 +30,8 @@ WITH
       , CASE
           WHEN is_chiller_stock_boolean IS TRUE THEN 'Chiller Stock'
           WHEN is_chiller_stock_boolean IS FALSE THEN 'Chiller Stock'
-          ELSE 'Undefined'
+          WHEN is_chiller_stock_boolean IS NULL THEN 'Undefined'
+          ELSE 'Invalid'
           END AS is_chiller_stock
     FROM dim_product__cast_type
 )
