@@ -10,6 +10,7 @@ WITH
       , stock_item_name AS product_name
       , brand AS brand_name
       , supplier_id AS supplier_key
+      , is_chiller_stock
     FROM dim_product__source
 )
 
@@ -19,6 +20,7 @@ WITH
       , CAST(product_name AS STRING) AS product_name
       , CAST(brand_name AS STRING) AS brand_name
       , CAST(supplier_key AS INTEGER) AS supplier_key
+      , CAST(is_chiller_stock AS BOOLEAN) AS is_chiller_stock
     FROM dim_product__rename_column
 )
 
@@ -26,6 +28,7 @@ SELECT
   dim_product.product_key
   , dim_product.product_name
   , dim_product.brand_name
+  , dim_product.is_chiller_stock
   , dim_product.supplier_key
   , dim_supplier.supplier_name
 FROM dim_product__cast_type dim_product
