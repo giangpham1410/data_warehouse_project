@@ -20,19 +20,16 @@ WITH
       , CAST(product_name AS STRING) AS product_name
       , CAST(brand_name AS STRING) AS brand_name
       , CAST(supplier_key AS INTEGER) AS supplier_key
-      , CAST(is_chiller_stock AS BOOLEAN) AS is_chiller_stock
+      , CAST(is_chiller_stock AS BOOLEAN) AS is_chiller_stock_boolean
     FROM dim_product__rename_column
 )
 
 , dim_product__convert_boolean AS (
     SELECT 
-      product_key
-      , product_name
-      , brand_name
-      , supplier_key
+      *
       , CASE
-          WHEN is_chiller_stock IS TRUE THEN 'Chiller Stock'
-          WHEN is_chiller_stock IS FALSE THEN 'Chiller Stock'
+          WHEN is_chiller_stock_boolean IS TRUE THEN 'Chiller Stock'
+          WHEN is_chiller_stock_boolean IS FALSE THEN 'Chiller Stock'
           ELSE 'Undefined'
           END AS is_chiller_stock
     FROM dim_product__cast_type
