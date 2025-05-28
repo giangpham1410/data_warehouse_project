@@ -10,6 +10,14 @@ WITH
       , full_name
     FROM dim_person__source
 )
+, dim_person__cast_type AS (
+    SELECT
+      CAST(person_key AS INTEGER) AS person_key
+      , CAST(full_name AS STRING) AS full_name
+    FROM dim_person__rename_column
+)
+
 SELECT
-  *
-FROM dim_person__rename_column
+  person_key
+  , full_name
+FROM dim_person__cast_type
