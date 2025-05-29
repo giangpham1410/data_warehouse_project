@@ -29,6 +29,12 @@ WITH
     SELECT 
       0 AS person_key
       , 'Undefined' AS full_name
+
+    UNION ALL
+
+    SELECT 
+      -1 AS person_key
+      , 'Error' AS full_name
 )
 
 SELECT
