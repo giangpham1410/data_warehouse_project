@@ -29,14 +29,12 @@ WITH
     SELECT
       0 AS buying_group_key
       , 'Undefined' AS buying_group_name
-    FROM dim_buying_group__cast_type
 
     UNION ALL
 
     SELECT
       -1 AS buying_group_key
       , 'Invalid 'AS buying_group_name
-    FROM dim_buying_group__cast_type
 )
 
 SELECT
