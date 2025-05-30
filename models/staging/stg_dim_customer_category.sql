@@ -29,14 +29,12 @@ WITH
     SELECT
       0 AS customer_category_key
       , 'Undefined' AS customer_category_name
-    FROM dim_customer_category__cast_type
 
     UNION ALL
 
     SELECT
       -1 AS customer_category_key
       , 'Invalid 'AS customer_category_name
-    FROM dim_customer_category__cast_type
 )
 
 
