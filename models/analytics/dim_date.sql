@@ -7,12 +7,12 @@ WITH dim_date__generate AS (
 , dim_date__enrich AS (
     SELECT
       date
-      , FORMAT_DATE('%A', date) AS day_of_week
-      , FORMAT_DATE('%a', date) AS day_of_week_short
+      , EXTRACT(YEAR FROM date) AS year_number
+      , DATE_TRUNC(date, YEAR) AS year -- first day in the year
       , DATE_TRUNC(date, MONTH) AS year_month -- first day in the month
       , FORMAT_DATE('%B', date) as month
-      , DATE_TRUNC(date, YEAR) AS year -- first day in the year
-      , EXTRACT(YEAR FROM date) AS year_number
+      , FORMAT_DATE('%A', date) AS day_of_week
+      , FORMAT_DATE('%a', date) AS day_of_week_short
       --, FORMAT_DATE('%Q', d) as quarter
       --, EXTRACT(WEEK FROM d) AS year_week
       --, EXTRACT(DAY FROM d) AS year_day
