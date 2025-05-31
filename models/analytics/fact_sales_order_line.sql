@@ -27,7 +27,7 @@ WITH
 , fact_sales_order_line__caculate_measure AS (
     SELECT
       *
-      , quantity * unit_price AS gross_mount
+      , COALESCE(quantity * unit_price, 0) AS gross_mount
     FROM fact_sales_order_line__cast_type
 )
 
