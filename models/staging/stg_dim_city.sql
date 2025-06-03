@@ -44,7 +44,10 @@ WITH
 )
 
 SELECT
-  city_key
-  , city_name
-  , state_province_key
-FROM dim_city__add_undefined_record
+    dim_city.city_key
+  , dim_city.city_name
+  , dim_city.state_province_key
+  , dim_state_province.state_province_name
+  , dim_state_province.state_province_code
+FROM dim_city__add_undefined_record dim_city
+  LEFT JOIN {{ ref('stg_dim_state_province') }} dim_state_province ON dim_city.state_province_key = dim_state_province.state_province_key
