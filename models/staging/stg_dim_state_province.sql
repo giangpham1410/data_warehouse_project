@@ -12,5 +12,13 @@ WITH
     FROM dim_state_province__source
 )
 
+, dim_state_province__cast_type AS (
+    SELECT
+      CAST(state_province_key AS INTEGER) AS state_province_key
+      , CAST(state_province_name AS STRING) AS state_province_name
+      , CAST(state_province_code AS STRING) AS state_province_code
+    FROM dim_state_province__rename_column
+)
+
 SELECT *
-FROM dim_state_province__rename_code
+FROM dim_state_province__cast_type
