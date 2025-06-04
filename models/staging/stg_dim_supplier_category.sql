@@ -18,11 +18,11 @@ WITH
     FROM dim_supplier_category__rename_column
 )
 
-/*
+, dim_supplier_category__add_undefined_record AS (
     SELECT
       supplier_category_key
       , supplier_category_name
-    FROM dim_supplier_category__rename_column
+    FROM dim_supplier_category__cast_type
 
     UNION ALL
 
@@ -36,7 +36,8 @@ WITH
       -1 AS supplier_category_key
       , 'Invalid' AS supplier_category_name
 )
-*/
 
-SELECT *
-FROM dim_supplier_category__cast_type
+SELECT
+  supplier_category_key
+  , supplier_category_name
+FROM dim_supplier_category__add_undefined_record
