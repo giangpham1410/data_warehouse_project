@@ -1,28 +1,28 @@
 WITH
-  dim_buying_group__source AS (
+  dim_customer_buying_group__source AS (
     SELECT *
     FROM `vit-lam-data.wide_world_importers.sales__buying_groups`
 )
 
-, dim_buying_group__rename_column AS (
+, dim_customer_buying_group__rename_column AS (
   SELECT
     buying_group_id AS buying_group_key
     , buying_group_name
-  FROM dim_buying_group__source
+  FROM dim_customer_buying_group__source
 )
 
-, dim_buying_group__cast_type AS (
+, dim_customer_buying_group__cast_type AS (
   SELECT
     CAST(buying_group_key AS INTEGER) AS buying_group_key
     , CAST(buying_group_name AS STRING) buying_group_name
-  FROM dim_buying_group__rename_column
+  FROM dim_customer_buying_group__rename_column
 )
 
-, dim_buying_group__add_undefined_record AS ( 
+, dim_customer_buying_group__add_undefined_record AS ( 
     SELECT
       buying_group_key
       , buying_group_name
-    FROM dim_buying_group__cast_type
+    FROM dim_customer_buying_group__cast_type
 
     UNION ALL
 
@@ -40,4 +40,4 @@ WITH
 SELECT
   buying_group_key
   , buying_group_name
-FROM dim_buying_group__add_undefined_record
+FROM dim_customer_buying_group__add_undefined_record
