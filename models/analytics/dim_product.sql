@@ -160,6 +160,9 @@ SELECT
   , dim_product.supplier_key
   , COALESCE(dim_supplier.supplier_name, 'Invalid') AS supplier_name 
 
+  , dim_supplier_category.supplier_category_key
+  , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name 
+
   , dim_product.color_key
   , COALESCE(dim_color.color_name, 'Invalid') AS color_name 
 
@@ -172,6 +175,9 @@ SELECT
 FROM dim_product__handle_null dim_product
   LEFT JOIN {{ ref('dim_supplier') }} dim_supplier
     ON dim_product.supplier_key = dim_supplier.supplier_key
+
+  LEFT JOIN {{ ref('stg_dim_supplier_category') }} dim_supplier_category
+    ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
 
   LEFT JOIN {{ ref('stg_dim_color')}} dim_color
     ON dim_product.color_key = dim_color.color_key
