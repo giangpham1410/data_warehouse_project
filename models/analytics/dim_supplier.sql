@@ -58,9 +58,9 @@ SELECT
   , dim_supplier.supplier_name
   , dim_supplier.payment_days
   , dim_supplier.supplier_category_key
-  , dim_supplier_category.supplier_category_name
+  , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
   , dim_supplier.delivery_method_key
-  , dim_delivery_method.delivery_method_name
+  , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
 FROM dim_supplier__add_undefined_record dim_supplier
   LEFT JOIN {{ ref('stg_dim_supplier_category') }} dim_supplier_category ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
   LEFT JOIN {{ ref('stg_dim_delivery_method') }} dim_delivery_method ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
