@@ -94,10 +94,10 @@ WITH
       , 'Undefined' AS customer_name
       , 'Undefined' AS is_on_credit_hold
       , 'Undefined' AS is_statement_sent
-      , 'Undefined' AS credit_limit
-      , 'Undefined' AS payment_days
-      , 'Undefined' AS standard_discount_percentage
-      , 'Undefined' AS account_opened_date
+      , NULL AS credit_limit
+      , 0 AS payment_days
+      , 0 AS standard_discount_percentage
+      , '9999-12-31' AS account_opened_date
 
       , 0 AS customer_category_key
       , 0 AS customer_buying_group_key
@@ -115,10 +115,10 @@ WITH
       , 'Invalid' AS customer_name
       , 'Invalid' AS is_on_credit_hold
       , 'Invalid' AS is_statement_sent
-      , 'Invalid' AS credit_limit
-      , 'Invalid' AS payment_days
-      , 'Invalid' AS standard_discount_percentage
-      , 'Invalid' AS account_opened_date
+      , NULL AS credit_limit
+      , -1 AS payment_days
+      , -1 AS standard_discount_percentage
+      , '1900-01-01' AS account_opened_date -- Ngụ ý “lỗi dữ liệu” hoặc “không rõ ngày thực sự là gì”
 
       , -1 AS customer_category_key
       , -1 AS customer_buying_group_key
@@ -172,13 +172,15 @@ SELECT
   , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
 
   , dim_customer.delivery_city_key
-  , COALESCE(dim_delivery_city.delivery_city_name, 'Invalid') AS delivery_city_name
+  , COALESCE(dim_delivery_city.city_name, 'Invalid') AS delivery_city_name
+
   , dim_delivery_city.state_province_key AS delivery_state_province_key
   , COALESCE(dim_delivery_city.state_province_name, 'Invalid') AS delivery_state_province_name
   , COALESCE(dim_delivery_city.state_province_code, 'Invalid') AS delivery_state_province_code
 
   , dim_customer.postal_city_key
-  , COALESCE(dim_postal_city.postal_city_name , 'Invalid') AS postal_city_name
+  , COALESCE(dim_postal_city.city_name , 'Invalid') AS postal_city_name
+
   , dim_postal_city.state_province_key AS postal_state_province_key
   , COALESCE(dim_postal_city.state_province_name, 'Invalid') AS postal_state_province_name
   , COALESCE(dim_postal_city.state_province_code, 'Invalid') AS postal_state_province_code
@@ -186,7 +188,7 @@ SELECT
 
   , dim_customer.primary_contact_person_key
   , COALESCE(dim_primary_contact_person.full_name, 'Invalid') AS primary_contact_person_full_name
-  , dim_primary_contact_person.preferred_name, 'Invalid') AS primary_contact_person_preferred_name
+  , COALESCE(dim_primary_contact_person.preferred_name, 'Invalid') AS primary_contact_person_preferred_name
 
   , dim_customer.alternate_contact_person_key
   , COALESCE(dim_alternate_contact_person.full_name, 'Invalid') AS alternate_contact_person_full_name
@@ -194,21 +196,28 @@ SELECT
 
   , dim_customer.bill_to_customer_key
   , COALESCE(dim_bill_to_customer.customer_name, 'Invalid') AS bill_to_customer_name
-  
+
 FROM dim_customer__handle_null dim_customer
   LEFT JOIN {{ ref('stg_dim_customer_category') }} dim_customer_category
     ON dim_customer.customer_category_key = dim_customer_category.customer_category_key
+
   LEFT JOIN {{ ref('stg_dim_customer_buying_group') }} dim_customer_buying_group
     ON dim_customer.customer_buying_group_key = dim_customer_buying_group.customer_buying_group_key
+
   LEFT JOIN {{ ref('stg_dim_delivery_method') }} dim_delivery_method
     ON dim_customer.delivery_method_key = dim_delivery_method.delivery_method_key
+
   LEFT JOIN {{ ref('stg_dim_city') }} dim_delivery_city
     ON dim_customer.delivery_city_key = dim_delivery_city.city_key
+
   LEFT JOIN {{ ref('stg_dim_city') }} dim_postal_city
     ON dim_customer.postal_city_key = dim_postal_city.city_key
+
   LEFT JOIN {{ ref ('dim_person') }} dim_primary_contact_person
     ON dim_customer.primary_contact_person_key = dim_primary_contact_person.person_key
+
   LEFT JOIN {{ ref ('dim_person') }} dim_alternate_contact_person
     ON dim_customer.alternate_contact_person_key = dim_alternate_contact_person.person_key
-  LEFT JOIN {{ ref('dim_customer') }} dim_bill_to_customer
-    ON dim_customer.customer_key = dim_bill_to_customer.customer_key
+
+  LEFT JOIN dim_customer__handle_null dim_bill_to_customer
+    ON dim_customer.bill_to_customer_key = dim_bill_to_customer.customer_key
