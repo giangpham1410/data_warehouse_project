@@ -14,7 +14,7 @@ WITH
 , dim_customer_buying_group__cast_type AS (
   SELECT
     CAST(customer_buying_group_key AS INTEGER) AS customer_buying_group_key
-    , CAST(buying_group_name AS STRING) AS customer_buying_group_name
+    , CAST(customer_buying_group_name AS STRING) AS customer_buying_group_name
   FROM dim_customer_buying_group__rename_column
 )
 
