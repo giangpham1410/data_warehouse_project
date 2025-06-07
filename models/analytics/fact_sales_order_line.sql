@@ -85,11 +85,13 @@ SELECT
   , COALESCE(fact_so_header.contact_person_key, -1) AS contact_person_key 
   , COALESCE(fact_so_header.backorder_order_key, -1) AS backorder_order_key
 
-  , CONCAT(
-      COALESCE(fact_so_header.is_undersupply_backordered, 'Undefined')
-      , '~'
-      , fact_so_line.package_type_key
-    ) AS sales_order_line_indicator_key
+  , FARM_FINGERPRINT(
+      CONCAT(
+          COALESCE(fact_so_header.is_undersupply_backordered, 'Undefined')
+          , '~'
+          , fact_so_line.package_type_key
+        )
+   ) AS sales_order_line_indicator_key
 
 FROM fact_sales_order_line__handle_null fact_so_line
   LEFT JOIN {{ ref('stg_fact_sales_order') }} fact_so_header
