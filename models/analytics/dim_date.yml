@@ -3,6 +3,11 @@ version: 2
 models:
   - name: dim_date
     columns: 
+      - name: date
+        tests:
+          - not_null
+          - unique
+
       - name: year_number
         tests:
           - not_null
