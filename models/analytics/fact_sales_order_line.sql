@@ -41,7 +41,7 @@ WITH
 , fact_sales_order_line__caculate_measure AS (
     SELECT
       *
-      , COALESCE(quantity * unit_price, 0) AS gross_mount
+      , COALESCE(quantity * unit_price, 0) AS gross_amount
     FROM fact_sales_order_line__cast_type
 )
 
@@ -54,7 +54,7 @@ WITH
       , quantity
       , tax_rate
       , picked_quantity
-      , gross_mount
+      , gross_amount
       , COALESCE(product_key, 0) AS product_key
       , COALESCE(package_type_key, 0) AS package_type_key
       , COALESCE(sales_order_key, 0) AS sales_order_key
@@ -73,7 +73,7 @@ SELECT
   , fact_so_line.quantity
   , fact_so_line.tax_rate
   , fact_so_line.picked_quantity
-  , fact_so_line.gross_mount
+  , fact_so_line.gross_amount
 
   , fact_so_line.product_key
   --, fact_so_line.package_type_key
