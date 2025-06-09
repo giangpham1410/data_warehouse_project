@@ -23,6 +23,8 @@ models:
       - name: is_chiller_stock
         tests:
           - not_null
+          - accepted_values:
+              values: ['Is Chiller Stock', 'Chiller Stock', 'Undefined', 'Invalid']
 
       - name: unit_price
         tests:
