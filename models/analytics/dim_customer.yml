@@ -42,6 +42,8 @@ models:
           - relationships:
               to: ref('stg_dim_customer_category')
               field: customer_category_key
+              config:
+                where: "customer_key <> 0" # remove customer: undefined
       
       - name: customer_category_name
         tests:
