@@ -2,6 +2,16 @@ version: 2
 
 models:
   - name: fact_sales_order_line
+
+    # Test expression: Solution 1 - test in Model (Solution 2 is below)
+    # tests:
+    #   - dbt_utils.expression_is_true:
+    #       expression: "gross_amount = unit_price * quantity"
+
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.sales__order_lines`"
+
     columns:
       - name: sales_order_line_key
         tests:
@@ -84,3 +94,10 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 20
+
+      # Test expression: Solution 2 - Test in column name
+      - name: gross_amount
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: '= unit_price * quantity'
