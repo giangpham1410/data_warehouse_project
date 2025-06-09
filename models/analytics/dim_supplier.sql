@@ -53,6 +53,16 @@ WITH
       , -1 AS delivery_method_key
 )
 
+, dim_supplier__handle_null AS (
+    SELECT
+      supplier_key
+      , supplier_name
+      , payment_days
+      , COALESCE(supplier_category_key, 0) AS supplier_category_key
+      , COALESCE(delivery_method_key, 0) AS delivery_method_key
+    FROM dim_supplier__add_undefined_record
+)
+
 SELECT
   dim_supplier.supplier_key
   , dim_supplier.supplier_name
@@ -61,7 +71,7 @@ SELECT
   , COALESCE(dim_supplier_category.supplier_category_name, 'Invalid') AS supplier_category_name
   , dim_supplier.delivery_method_key
   , COALESCE(dim_delivery_method.delivery_method_name, 'Invalid') AS delivery_method_name
-FROM dim_supplier__add_undefined_record dim_supplier
+FROM dim_supplier__handle_null dim_supplier
   LEFT JOIN {{ ref('stg_dim_supplier_category') }} dim_supplier_category ON dim_supplier.supplier_category_key = dim_supplier_category.supplier_category_key
   LEFT JOIN {{ ref('stg_dim_delivery_method') }} dim_delivery_method ON dim_supplier.delivery_method_key = dim_delivery_method.delivery_method_key
   
