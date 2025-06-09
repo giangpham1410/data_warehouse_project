@@ -7,6 +7,13 @@ models:
         tests:
           - unique
           - not_null
+      
+      - name: order_date
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: "'2013-01-01'"
+              max_value: 'CURRENT_DATE'
 
       - name: sales_order_line_indicator_key
         tests:
