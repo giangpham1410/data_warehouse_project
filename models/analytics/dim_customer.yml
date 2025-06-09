@@ -15,10 +15,15 @@ models:
       - name: is_on_credit_hold
         tests:
           - not_null
+          - accepted_values:
+              values: ['Not On Credit Hold', 'On Credit Hold', 'Undefined', 'Invalid']
       
       - name: is_statement_sent
         tests:
           - not_null
+          - accepted_values:
+              values: ['Not Statement Sent', 'Statement Sent', 'Undefined', 'Invalid']
+      
       
       - name: credit_limit
         tests:
