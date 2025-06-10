@@ -42,5 +42,18 @@ WITH
     FROM fact_purchase_order__cast_type
 )
 
+, fact_purchase_order__handle_null AS (
+    SELECT
+      purchase_order_key
+      , is_order_finalized
+      , order_date
+      , expected_delivery_date
+      , COALESCE(supplier_reference, 'Undefined') AS supplier_reference
+      , COALESCE(supplier_key, 0)  AS supplier_key
+      , COALESCE(delivery_method_key, 0) AS delivery_method_key
+      , COALESCE(contact_person_key, 0) AS contact_person_key
+    FROM fact_purchase_order__convert_boolean
+)
+
 SELECT *
-FROM fact_purchase_order__convert_boolean
+FROM fact_purchase_order__handle_null
