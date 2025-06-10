@@ -61,17 +61,7 @@ SELECT
   , fact_purchase_order.order_date
   , fact_purchase_order.expected_delivery_date
   , fact_purchase_order.supplier_reference
-
   , fact_purchase_order.supplier_key
-  , COALESCE(dim_supplier.supplier_name, 'Undefined') AS supplier_name
-
   , fact_purchase_order.delivery_method_key
-  , COALESCE(dim_delivery_method.delivery_method_name, 'Undefined') AS delivery_method_name
-
   , fact_purchase_order.contact_person_key
-  , COALESCE(dim_contact_person.contact_person_full_name, 'Undefined') AS contact_person_full_name
-
 FROM fact_purchase_order__handle_null fact_purchase_order
-  LEFT JOIN {{ ref('dim_supplier') }} dim_supplier ON fact_purchase_order.supplier_key = dim_supplier.supplier_key
-  LEFT JOIN {{ ref('dim_contact_person') }} dim_contact_person ON fact_purchase_order.contact_person_key = dim_contact_person.contact_person_key
-  LEFT JOIN {{ ref('stg_dim_delivery_method') }} dim_delivery_method ON fact_purchase_order.delivery_method_key = dim_delivery_method.delivery_method_key
