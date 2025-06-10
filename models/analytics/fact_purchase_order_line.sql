@@ -19,5 +19,20 @@ WITH
     FROM fact_purchase_order_line__source
 )
 
+, fact_purchase_order_line__cast_type AS (
+    SELECT
+      purchase_order_line_key
+      , CAST(description AS STRING) AS description
+      , CAST(is_order_line_finalized AS BOOLEAN) AS is_order_line_finalized
+      , CAST(ordered_outers AS INTEGER) AS ordered_outers
+      , CAST(received_outers AS INTEGER) AS received_outers
+      , CAST(expected_unit_price_per_outer AS NUMERIC) AS expected_unit_price_per_outer
+      , CAST(last_receipt_date AS DATE) AS last_receipt_date
+      , CAST(product_key AS INTEGER) AS product_key
+      , CAST(package_type_key AS INTEGER) AS package_type_key
+      , CAST(purchase_order_key AS INTEGER) AS purchase_order_key
+    FROM fact_purchase_order_line__rename_column
+)
+
 SELECT *
-FROM fact_purchase_order_line__rename_column
+FROM fact_purchase_order_line__cast_type
