@@ -83,5 +83,12 @@ SELECT
   , COALESCE(fact_purchase_order.delivery_method_key, -1) AS delivery_method_key
   , COALESCE(fact_purchase_order.contact_person_key, -1) AS contact_person_key
 
+  , CONCAT(
+      fact_purchase_order.delivery_method_key
+      ,'~', fact_purchase_order_line.package_type_key
+      ,'~', fact_purchase_order_line.is_order_line_finalized
+      ,'~', fact_purchase_order.is_order_finalized
+  ) AS purchase_order_line_indicator_key
+
 FROM fact_purchase_order_line__handle_null fact_purchase_order_line
   LEFT JOIN {{ ref("stg_fact_purchase_order") }} fact_purchase_order ON fact_purchase_order_line.purchase_order_key = fact_purchase_order.purchase_order_key
