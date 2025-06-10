@@ -65,6 +65,11 @@ SELECT
     fact_purchase_order_line.purchase_order_line_key
   , fact_purchase_order_line.description
   , fact_purchase_order_line.is_order_line_finalized
+  , fact_purchase_order.is_order_finalized
+  , fact_purchase_order.supplier_reference
+  , fact_purchase_order.order_date
+  , fact_purchase_order.expected_delivery_date
+
   , fact_purchase_order_line.ordered_outers
   , fact_purchase_order_line.received_outers
   , fact_purchase_order_line.expected_unit_price_per_outer
@@ -77,8 +82,6 @@ SELECT
   , COALESCE(fact_purchase_order.supplier_key, -1) AS supplier_key
   , COALESCE(fact_purchase_order.delivery_method_key, -1) AS delivery_method_key
   , COALESCE(fact_purchase_order.contact_person_key, -1) AS contact_person_key
-  , fact_purchase_order.supplier_reference
-  , fact_purchase_order.is_order_finalized
-  
+
 FROM fact_purchase_order_line__handle_null fact_purchase_order_line
   LEFT JOIN {{ ref("stg_fact_purchase_order") }} fact_purchase_order ON fact_purchase_order_line.purchase_order_key = fact_purchase_order.purchase_order_key
