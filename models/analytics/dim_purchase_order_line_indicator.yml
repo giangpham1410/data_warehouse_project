@@ -27,7 +27,11 @@ models:
       - name: is_order_line_finalized
         tests:
           - not_null
+          - accepted_values:
+              values: ['Order Line Finalized', 'Not Order Line Finalized', 'Undefined', 'Invalid']
       
       - name: is_order_finalized
         tests:
           - not_null
+          - accepted_values:
+              values: ['Order Finalized', 'Not Order Finalized', 'Undefined', 'Invalid']
