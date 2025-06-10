@@ -64,8 +64,8 @@ WITH
 SELECT
     fact_purchase_order_line.purchase_order_line_key
   , fact_purchase_order_line.description
-  , fact_purchase_order_line.is_order_line_finalized
-  , fact_purchase_order.is_order_finalized
+  --, fact_purchase_order_line.is_order_line_finalized
+  --, fact_purchase_order.is_order_finalized
   , fact_purchase_order.supplier_reference
   , fact_purchase_order.order_date
   , fact_purchase_order.expected_delivery_date
@@ -76,11 +76,11 @@ SELECT
   , fact_purchase_order_line.last_receipt_date
 
   , fact_purchase_order_line.product_key
-  , fact_purchase_order_line.package_type_key
+  --, fact_purchase_order_line.package_type_key
   , fact_purchase_order_line.purchase_order_key
 
   , COALESCE(fact_purchase_order.supplier_key, -1) AS supplier_key
-  , COALESCE(fact_purchase_order.delivery_method_key, -1) AS delivery_method_key
+  --, COALESCE(fact_purchase_order.delivery_method_key, -1) AS delivery_method_key
   , COALESCE(fact_purchase_order.contact_person_key, -1) AS contact_person_key
 
   , CONCAT(
