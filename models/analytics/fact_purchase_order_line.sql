@@ -23,7 +23,7 @@ WITH
     SELECT
       purchase_order_line_key
       , CAST(description AS STRING) AS description
-      , CAST(is_order_line_finalized AS BOOLEAN) AS is_order_line_finalized
+      , CAST(is_order_line_finalized AS BOOLEAN) AS is_order_line_finalized_boolean
       , CAST(ordered_outers AS INTEGER) AS ordered_outers
       , CAST(received_outers AS INTEGER) AS received_outers
       , CAST(expected_unit_price_per_outer AS NUMERIC) AS expected_unit_price_per_outer
@@ -34,5 +34,18 @@ WITH
     FROM fact_purchase_order_line__rename_column
 )
 
+, fact_purchase_order_line__convert_boolean AS (
+    SELECT
+      *
+      , CASE
+          WHEN is_order_line_finalized_boolean IS TRUE THEN 'Order Line Finalized'
+          WHEN is_order_line_finalized_boolean IS FALSE THEN 'Not Order Line Finalized'
+          WHEN is_order_line_finalized_boolean IS NULL THEN 'Undefined'
+          ELSE 'Invalid'
+        END AS is_order_line_finalized
+    FROM fact_purchase_order_line__cast_type
+)
+
+
 SELECT *
-FROM fact_purchase_order_line__cast_type
+FROM fact_purchase_order_line__convert_boolean
