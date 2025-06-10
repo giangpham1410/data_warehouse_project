@@ -30,12 +30,14 @@ WITH
 )
 
 SELECT
-  CONCAT(
-    delivery_method_key
-    ,'~', package_type_key
-    ,'~', is_order_line_finalized
-    ,'~', is_order_finalized
-  ) AS purchase_order_line_indicator_key
+  FARM_FINGERPRINT (
+    CONCAT(
+      delivery_method_key
+      ,'~', package_type_key
+      ,'~', is_order_line_finalized
+      ,'~', is_order_finalized
+      )
+   ) AS purchase_order_line_indicator_key
   , delivery_method_key
   , delivery_method_name
   , package_type_key
