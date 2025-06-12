@@ -26,5 +26,29 @@ WITH
     FROM fact_invoice__source
 )
 
-SELECT  *
-FROM fact_invoice__rename_column
+, fact_invoice__cast_type AS (
+    SELECT
+      CAST(invoice_key AS INTEGER) AS invoice_key
+      , CAST(is_credit_note AS BOOLEAN) AS is_credit_note_boolean
+      , CAST(total_invoice_dy_items AS INTEGER) AS total_invoice_dy_items
+      , CAST(total_invoice_chiller_items AS INTEGER) AS total_invoice_chiller_items
+      , CAST(customer_purchase_order_number AS STRING) AS customer_purchase_order_number
+      , CAST(returned_delivery_data AS STRING) AS returned_delivery_data
+      , CAST(invoice_date AS DATE) AS invoice_date
+      , CAST(confirmed_delivery_date AS DATE) AS confirmed_delivery_date
+      , CAST(confirmed_received_by AS STRING) AS confirmed_received_by
+      
+      
+      , CAST(customer_key AS INTEGER) AS customer_key
+      , CAST(bill_to_customer_key AS INTEGER) AS bill_to_customer_key
+      , CAST(sales_order_key AS INTEGER) AS sales_order_key
+      , CAST(delivery_method_key AS INTEGER) AS delivery_method_key
+      , CAST(contact_person_key AS INTEGER) AS contact_person_key
+      , CAST(accounts_person_key AS INTEGER) AS accounts_person_key
+      , CAST(salesperson_person_key AS INTEGER) AS salesperson_person_key
+      , CAST(packed_by_person_key AS INTEGER) AS packed_by_person_key
+    FROM fact_invoice__rename_column
+)
+
+SELECT *
+FROM fact_invoice__cast_type
