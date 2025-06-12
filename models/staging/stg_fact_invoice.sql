@@ -50,5 +50,17 @@ WITH
     FROM fact_invoice__rename_column
 )
 
+, fact_invoice__convert_boolean AS (
+    SELECT
+      *
+      , CASE
+          WHEN is_credit_note_boolean IS TRUE THEN 'Credit Note'
+          WHEN is_credit_note_boolean IS FALSE THEN 'Not Credit Note'
+          WHEN is_credit_note_boolean IS NULL THEN 'Undefined'
+          ELSE 'Invalid'
+        END AS is_credit_note
+    FROM fact_invoice__cast_type
+)
+
 SELECT *
-FROM fact_invoice__cast_type
+FROM fact_invoice__convert_boolean
