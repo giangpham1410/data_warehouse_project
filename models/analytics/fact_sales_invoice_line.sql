@@ -6,7 +6,7 @@ WITH
 
 , fact_invoice_line__rename_column AS (
     SELECT
-      invoice_line_id AS invoice_line_key
+      invoice_line_id AS sales_invoice_line_key
       , description
       , quantity
       , unit_price
@@ -17,13 +17,13 @@ WITH
 
       , stock_item_id AS product_key
       , package_type_id AS package_type_key
-      , invoice_id AS invoice_key
+      , invoice_id AS sales_invoice_key
     FROM fact_invoice_line__source
 )
 
 , fact_invoice_line__cast_type AS (
     SELECT
-      CAST(invoice_line_key AS INTEGER) AS invoice_line_key
+      CAST(sales_invoice_line_key AS INTEGER) AS sales_invoice_line_key
       , CAST(description AS STRING) AS description
       , CAST(quantity AS INTEGER) AS quantity
       , CAST(unit_price AS NUMERIC) AS unit_price
@@ -34,13 +34,13 @@ WITH
 
       , CAST(product_key AS INTEGER) AS product_key
       , CAST(package_type_key AS INTEGER) AS package_type_key
-      , CAST(invoice_key AS INTEGER) AS invoice_key
+      , CAST(sales_invoice_key AS INTEGER) AS sales_invoice_key
     FROM fact_invoice_line__rename_column
 )
 
 , fact_invoice_line__handle_null AS (
     SELECT
-      invoice_line_key
+      sales_invoice_line_key
       , description
       , quantity
       , unit_price
@@ -51,12 +51,12 @@ WITH
 
       , COALESCE(product_key, 0) AS product_key
       , COALESCE(package_type_key, 0) AS package_type_key
-      , COALESCE(invoice_key, 0) AS invoice_key
+      , COALESCE(sales_invoice_key, 0) AS sales_invoice_key
     FROM fact_invoice_line__cast_type
 )
 
 SELECT
-  fact_invoice_line.invoice_line_key
+  fact_invoice_line.sales_invoice_line_key
   , fact_invoice_line.description
   , fact_invoice_line.quantity
   , fact_invoice_line.unit_price
@@ -84,6 +84,6 @@ SELECT
   , COALESCE(fact_invoice.salesperson_person_key, -1) AS salesperson_person_key
   , COALESCE(fact_invoice.packed_by_person_key, -1) AS packed_by_person_key
 
-  , fact_invoice_line.invoice_key
+  , fact_invoice_line.sales_invoice_key
 FROM fact_invoice_line__handle_null fact_invoice_line
-  LEFT JOIN {{ ref('stg_fact_invoice') }} fact_invoice ON fact_invoice_line.invoice_key = fact_invoice.invoice_key
+  LEFT JOIN {{ ref('stg_fact_sales_invoice') }} fact_invoice ON fact_invoice_line.sales_invoice_key = fact_invoice.sales_invoice_key
