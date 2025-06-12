@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: fact_invoice_line
+  - name: fact_sales_invoice_line
     tests:
       - dbt_utils.equal_rowcount:
           compare_model: "`vit-lam-data.wide_world_importers.sales__invoice_lines`"
 
     columns:
-      - name: invoice_line_key
+      - name: sales_invoice_line_key
         tests:
           - unique
           - not_null
