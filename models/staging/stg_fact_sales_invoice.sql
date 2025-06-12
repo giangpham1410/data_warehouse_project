@@ -1,12 +1,12 @@
 WITH
-  fact_invoice__source AS (
+  fact_sales_invoice__source AS (
     SELECT *
     FROM `vit-lam-data.wide_world_importers.sales__invoices`
 )
 
-, fact_invoice__rename_column AS (
+, fact_sales_invoice__rename_column AS (
     SELECT
-      invoice_id AS invoice_key
+      invoice_id AS sales_invoice_key
       , is_credit_note
       , total_dry_items AS total_invoice_dy_items
       , total_chiller_items AS total_invoice_chiller_items
@@ -23,12 +23,12 @@ WITH
       , salesperson_person_id AS salesperson_person_key
       , packed_by_person_id AS packed_by_person_key
       , customer_purchase_order_number
-    FROM fact_invoice__source
+    FROM fact_sales_invoice__source
 )
 
-, fact_invoice__cast_type AS (
+, fact_sales_invoice__cast_type AS (
     SELECT
-      CAST(invoice_key AS INTEGER) AS invoice_key
+      CAST(sales_invoice_key AS INTEGER) AS sales_invoice_key
       , CAST(is_credit_note AS BOOLEAN) AS is_credit_note_boolean
       , CAST(total_invoice_dy_items AS INTEGER) AS total_invoice_dy_items
       , CAST(total_invoice_chiller_items AS INTEGER) AS total_invoice_chiller_items
@@ -46,10 +46,10 @@ WITH
       , CAST(accounts_person_key AS INTEGER) AS accounts_person_key
       , CAST(salesperson_person_key AS INTEGER) AS salesperson_person_key
       , CAST(packed_by_person_key AS INTEGER) AS packed_by_person_key
-    FROM fact_invoice__rename_column
+    FROM fact_sales_invoice__rename_column
 )
 
-, fact_invoice__convert_boolean AS (
+, fact_sales_invoice__convert_boolean AS (
     SELECT
       *
       , CASE
@@ -58,12 +58,12 @@ WITH
           WHEN is_credit_note_boolean IS NULL THEN 'Undefined'
           ELSE 'Invalid'
         END AS is_credit_note
-    FROM fact_invoice__cast_type
+    FROM fact_sales_invoice__cast_type
 )
 
-, fact_invoice__handle_null AS (
+, fact_sales_invoice__handle_null AS (
     SELECT
-      invoice_key
+      sales_invoice_key
       , is_credit_note
       , total_invoice_dy_items
       , total_invoice_chiller_items
@@ -81,11 +81,11 @@ WITH
       , COALESCE(accounts_person_key, 0) AS accounts_person_key
       , COALESCE(salesperson_person_key, 0) AS salesperson_person_key
       , COALESCE(packed_by_person_key, 0) AS packed_by_person_key
-    FROM fact_invoice__convert_boolean
+    FROM fact_sales_invoice__convert_boolean
 )
 
 SELECT
-  invoice_key
+  sales_invoice_key
   , is_credit_note
   , total_invoice_dy_items
   , total_invoice_chiller_items
@@ -103,4 +103,4 @@ SELECT
   , accounts_person_key
   , salesperson_person_key
   , packed_by_person_key
-FROM fact_invoice__handle_null
+FROM fact_sales_invoice__handle_null
