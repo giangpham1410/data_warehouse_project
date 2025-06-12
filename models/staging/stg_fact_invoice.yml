@@ -11,6 +11,8 @@ models:
       - name: is_credit_note
         tests:
           - not_null
+          - accepted_values:
+              values: ['Credit Note', 'Not Credit Note', 'Undefined']
       
       - name: total_invoice_dy_items
         tests:
