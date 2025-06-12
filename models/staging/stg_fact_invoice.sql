@@ -84,5 +84,23 @@ WITH
     FROM fact_invoice__convert_boolean
 )
 
-SELECT *
+SELECT
+  invoice_key
+  , is_credit_note
+  , total_invoice_dy_items
+  , total_invoice_chiller_items
+  , customer_purchase_order_number
+  , returned_delivery_data
+  , invoice_date
+  , confirmed_delivery_date
+  , confirmed_received_by
+
+  , customer_key
+  , bill_to_customer_key
+  , sales_order_key
+  , delivery_method_key
+  , contact_person_key
+  , accounts_person_key
+  , salesperson_person_key
+  , packed_by_person_key
 FROM fact_invoice__handle_null
