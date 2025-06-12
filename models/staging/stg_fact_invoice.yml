@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: stg_fact_invoice
+
+    tests:
+        - dbt_utils.equal_rowcount:
+            compare_model: "`vit-lam-data.wide_world_importers.sales__invoices`"
+
     columns:
       - name: invoice_key
         tests:
