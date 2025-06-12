@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: stg_fact_invoice
+
+    tests:
+        - dbt_utils.equal_rowcount:
+            compare_model: "`vit-lam-data.wide_world_importers.sales__invoices`"
+
+    columns:
+      - name: invoice_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: is_credit_note
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Credit Note', 'Not Credit Note', 'Undefined']
+      
+      - name: total_invoice_dy_items
+        tests:
+          - not_null
+      
+      - name: total_invoice_chiller_items
+        tests:
+          - not_null
+      
+      - name: customer_purchase_order_number
+        tests:
+          - not_null
+      
+      - name: returned_delivery_data
+        tests:
+          - not_null
+      
+      - name: invoice_date
+        tests:
+          - not_null
+      
+      #- name: confirmed_delivery_date
+      #  tests:
+      #    - not_null
+      #
+      #- name: confirmed_received_by
+      #  tests:
+      #    - not_null- name: 
+      #  tests:
+      #    - not_null
+      
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      
+      - name: bill_to_customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      
+      - name: sales_order_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_fact_sales_order')
+              field: sales_order_key
+      
+      - name: delivery_method_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_dim_delivery_method')
+              field: delivery_method_key
+      
+      - name: contact_person_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_person')
+              field: person_key
+      
+      - name: accounts_person_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_person')
+              field: person_key
+      
+      - name: salesperson_person_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_salesperson_person')
+              field: salesperson_person_key
+      
+      - name: packed_by_person_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_contact_person')
+              field: contact_person_key
