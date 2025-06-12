@@ -38,7 +38,6 @@ WITH
       , CAST(confirmed_delivery_date AS DATE) AS confirmed_delivery_date
       , CAST(confirmed_received_by AS STRING) AS confirmed_received_by
       
-      
       , CAST(customer_key AS INTEGER) AS customer_key
       , CAST(bill_to_customer_key AS INTEGER) AS bill_to_customer_key
       , CAST(sales_order_key AS INTEGER) AS sales_order_key
@@ -62,5 +61,28 @@ WITH
     FROM fact_invoice__cast_type
 )
 
+, fact_invoice__handle_null AS (
+    SELECT
+      invoice_key
+      , is_credit_note
+      , total_invoice_dy_items
+      , total_invoice_chiller_items
+      , customer_purchase_order_number
+      , returned_delivery_data
+      , invoice_date
+      , confirmed_delivery_date
+      , confirmed_received_by
+
+      , COALESCE(customer_key, 0) AS customer_key
+      , COALESCE(bill_to_customer_key, 0) AS bill_to_customer_key
+      , COALESCE(sales_order_key, 0) AS sales_order_key
+      , COALESCE(delivery_method_key, 0) AS delivery_method_key
+      , COALESCE(contact_person_key, 0) AS contact_person_key
+      , COALESCE(accounts_person_key, 0) AS accounts_person_key
+      , COALESCE(salesperson_person_key, 0) AS salesperson_person_key
+      , COALESCE(packed_by_person_key, 0) AS packed_by_person_key
+    FROM fact_invoice__convert_boolean
+)
+
 SELECT *
-FROM fact_invoice__convert_boolean
+FROM fact_invoice__handle_null
