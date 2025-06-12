@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: fact_invoice_line
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.sales__invoice_lines`"
+
+    columns:
+      - name: invoice_line_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: description
+        tests:
+          - not_null
+      
+      - name: quantity
+        tests:
+          - not_null
+      
+      - name: unit_price
+        tests:
+          - not_null
+      
+      - name: tax_rate
+        tests:
+          - not_null
+      
+      - name: tax_amount
+        tests:
+          - not_null
+      
+      - name: line_profit
+        tests:
+          - not_null
+      
+      - name: extended_price
+        tests:
+          - not_null
+      
+      - name: is_credit_note
+        tests:
+          - not_null
+      
+      - name: total_invoice_dy_items
+        tests:
+          - not_null
+      
+      - name: total_invoice_chiller_items
+        tests:
+          - not_null
+      
+      - name: customer_purchase_order_number
+        tests:
+          - not_null
+      
+      - name: returned_delivery_data
+        tests:
+          - not_null
+      
+      - name: invoice_date
+        tests:
+          - not_null
+      
+      #- name: confirmed_delivery_date
+      #  tests:
+      #    - not_null
+      #
+      #- name: confirmed_received_by
+      #  tests:
+      #    - not_null
+      
+      - name: product_key
+        tests:
+          - not_null
+      
+      - name: package_type_key
+        tests:
+          - not_null
+      
+      - name: customer_key
+        tests:
+          - not_null
+      
+      - name: bill_to_customer_key
+        tests:
+          - not_null
+      
+      - name: sales_order_key
+        tests:
+          - not_null
+      
+      - name: delivery_method_key
+        tests:
+          - not_null
+      
+      - name: contact_person_key
+        tests:
+          - not_null
+      
+      - name: accounts_person_key
+        tests:
+          - not_null
+      
+      - name: salesperson_person_key
+        tests:
+          - not_null
+      
+      - name: packed_by_person_key
+        tests:
+          - not_null
