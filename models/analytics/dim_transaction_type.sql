@@ -11,6 +11,13 @@ WITH
     FROM dim_transaction_type__source
 )
 
+, dim_transaction_type__cast_type AS (
+    SELECT
+      CAST(transaction_type_key AS INTEGER) AS transaction_type_key
+      , CAST(transaction_type_name AS STRING) AS transaction_type_name
+    FROM dim_transaction_type__rename_column
+)
+
 SELECT
   *
-FROM dim_transaction_type__rename_column
+FROM dim_transaction_type__cast_type
