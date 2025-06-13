@@ -87,5 +87,5 @@ SELECT
       , payment_method_key, '~'
       , transaction_type_key
     )
-  ) AS dim_transaction_indicator_key
+  ) AS transaction_indicator_key
 FROM fact_customer_transaction__handle_null
