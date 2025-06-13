@@ -1,7 +1,12 @@
 version: 2
 
 models:
+
   - name: fact_product_transaction
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.warehouse__stock_item_transactions`"
+
     columns:
       - name: product_transaction_key
         tests:
