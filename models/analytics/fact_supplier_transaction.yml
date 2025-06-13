@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: fact_supplier_transaction
+    columns:
+      - name: supplier_transaction_key
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_invoice_number
+        tests:
+          - not_null
+
+      - name: amount_excluding_tax
+        tests:
+          - not_null
+
+      - name: tax_amount
+        tests:
+          - not_null
+
+      - name: transaction_amount
+        tests:
+          - not_null
+
+      - name: outstanding_balance
+        tests:
+          - not_null
+
+      - name: transaction_date
+        tests:
+          - not_null
+
+      #- name: finalization_date
+      #  tests:
+      #    - not_null
+
+      #- name: purchase_order_key
+      #  tests:
+      #    - not_null
+
+      - name: supplier_key
+        tests:
+          - not_null
+
+      - name: transaction_indicator_key
+        tests:
+          - not_null
