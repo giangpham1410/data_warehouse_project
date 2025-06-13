@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_transaction_type
+
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.application__transaction_types`"
+          config:
+            warn_if: "<> 2"
+            error_if: "<> 2"
+
+    columns:
+      - name: transaction_type_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: transaction_type_name
+        tests:
+          - not_null
