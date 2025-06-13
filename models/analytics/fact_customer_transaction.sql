@@ -50,6 +50,23 @@ WITH
     FROM fact_customer_transaction__cast_type
 )
 
+, fact_customer_transaction__handle_null AS (
+    SELECT
+      customer_transaction_key
+      , is_customer_finalized
+      , amount_excluding_tax
+      , tax_amount
+      , transaction_amount
+      , outstanding_balance
+      , transaction_date
+      , finalization_date
+      , COALESCE(customer_key, 0) AS customer_key
+      , COALESCE(transaction_type_key, 0) AS transaction_type_key
+      , COALESCE(sales_invoice_key, 0) AS sales_invoice_key
+      , COALESCE(payment_method_key, 0) AS payment_method_key
+    FROM fact_customer_transaction__convert_boolean
+)
+
 SELECT
   customer_transaction_key
   , is_customer_finalized
@@ -63,4 +80,4 @@ SELECT
   , transaction_type_key
   , sales_invoice_key
   , payment_method_key
-FROM fact_customer_transaction__convert_boolean
+FROM fact_customer_transaction__handle_null
