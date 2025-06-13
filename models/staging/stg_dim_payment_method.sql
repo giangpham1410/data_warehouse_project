@@ -11,5 +11,12 @@ WITH
     FROM dim_payment_method__source
 )
 
+, dim_payment_method__cast_type AS (
+    SELECT
+      CAST(payment_method_key AS INTEGER) AS payment_method_key
+      , CAST(payment_method_name AS STRING) AS payment_method_name
+    FROM dim_payment_method__rename_column
+)
+
 SELECT *
-FROM dim_payment_method__rename_column
+FROM dim_payment_method__cast_type
