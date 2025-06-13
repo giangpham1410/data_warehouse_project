@@ -73,7 +73,7 @@ WITH
 SELECT
   supplier_transaction_key
   , supplier_invoice_number
-  , is_supplier_finalized
+  --, is_supplier_finalized
   , amount_excluding_tax
   , tax_amount
   , transaction_amount
@@ -81,7 +81,15 @@ SELECT
   , transaction_date
   , finalization_date
   , supplier_key
-  , transaction_type_key
+  --, transaction_type_key
   , purchase_order_key
-  , payment_method_key
+  --, payment_method_key
+
+  , FARM_FINGERPRINT(
+      CONCAT(
+        is_supplier_finalized, '~'
+        , payment_method_key, '~'
+        , transaction_type_key
+      )
+    ) AS transaction_indicator_key
 FROM fact_supplier_transaction__handle_null
