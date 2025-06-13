@@ -15,9 +15,9 @@ WITH
       , is_finalized AS is_supplier_finalized
       , transaction_date
       , finalization_date
+      , purchase_order_id AS purchase_order_key
       , supplier_id AS supplier_key
       , transaction_type_id AS transaction_type_key
-      , purchase_order_id AS purchase_order_key
       , payment_method_id AS payment_method_key
     FROM fact_supplier_transaction__source
 )
@@ -33,9 +33,9 @@ WITH
       , CAST(outstanding_balance AS NUMERIC) AS outstanding_balance
       , CAST(transaction_date AS DATE) AS transaction_date
       , CAST(finalization_date AS DATE) AS finalization_date
+      , CAST(purchase_order_key AS INTEGER) AS purchase_order_key
       , CAST(supplier_key  AS INTEGER) AS supplier_key
       , CAST(transaction_type_key AS INTEGER) AS transaction_type_key
-      , CAST(purchase_order_key AS INTEGER) AS purchase_order_key
       , CAST(payment_method_key AS INTEGER) AS payment_method_key
     FROM fact_supplier_transaction__rename_column
 )
@@ -63,9 +63,9 @@ WITH
       , outstanding_balance
       , transaction_date
       , finalization_date
+      , purchase_order_key
       , COALESCE(supplier_key, 0) AS supplier_key
       , COALESCE(transaction_type_key, 0) AS transaction_type_key
-      , COALESCE(purchase_order_key, 0) AS purchase_order_key
       , COALESCE(payment_method_key, 0) AS payment_method_key
     FROM fact_supplier_transaction__convert_boolean
 )
@@ -80,11 +80,10 @@ SELECT
   , outstanding_balance
   , transaction_date
   , finalization_date
+  , purchase_order_key
   , supplier_key
   --, transaction_type_key
-  , purchase_order_key
   --, payment_method_key
-
   , FARM_FINGERPRINT(
       CONCAT(
         is_supplier_finalized, '~'
