@@ -10,7 +10,7 @@ WITH
 SELECT
   FARM_FINGERPRINT(
     CONCAT(dim_is_sales_invoice_credit_note.is_sales_invoice_credit_note, '~', dim_delivery_method.delivery_method_key, '~', dim_package_type.package_type_key)
-   ) AS dim_sales_invoice_line_indicator
+   ) AS sales_invoice_line_indicator_key
   , dim_is_sales_invoice_credit_note.is_sales_invoice_credit_note
   , dim_delivery_method.delivery_method_key
   , dim_delivery_method.delivery_method_name
