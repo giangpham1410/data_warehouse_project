@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: fact_customer_transaction
+    columns:
+      - name: customer_transaction_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: amount_excluding_tax
+        tests:
+          - not_null
+      
+      - name: tax_amount
+        tests:
+          - not_null
+      
+      - name: transaction_amount
+        tests:
+          - not_null
+      
+      - name: outstanding_balance
+        tests:
+          - not_null
+      
+      - name: transaction_date
+        tests:
+          - not_null
+      
+      #- name: finalization_date
+      #  tests:
+      #    - not_null
+      
+      #- name: sales_invoice_key
+      #  tests:
+      #    - not_null#
+      
+      - name: customer_key
+        tests:
+          - not_null
+      
+      - name: transaction_indicator_key
+        tests:
+          - not_null
