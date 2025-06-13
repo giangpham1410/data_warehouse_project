@@ -44,8 +44,8 @@ WITH
     SELECT
       *
       , CASE
-          WHEN is_supplier_finalized_boolean IS TRUE THEN 'Supplier Finalized'
-          WHEN is_supplier_finalized_boolean IS FALSE THEN 'Not Supplier Finalized'
+          WHEN is_supplier_finalized_boolean IS TRUE THEN 'Finalized'
+          WHEN is_supplier_finalized_boolean IS FALSE THEN 'Not Finalized'
           WHEN is_supplier_finalized_boolean IS NULL THEN 'Undefined'
           ELSE 'Invalid'
         END AS is_supplier_finalized
