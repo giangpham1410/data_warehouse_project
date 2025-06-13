@@ -2,6 +2,11 @@ version: 2
 
 models:
   - name: fact_customer_transaction
+
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: "`vit-lam-data.wide_world_importers.sales__customer_transactions`"
+
     columns:
       - name: customer_transaction_key
         tests:
