@@ -17,6 +17,9 @@ models:
       - name: delivery_method_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_delivery_method')
+              field: delivery_method_key
 
       - name: delivery_method_name
         tests:
@@ -25,6 +28,9 @@ models:
       - name: package_type_key
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_dim_package_type')
+              field: package_type_key
 
       - name: package_type_name
         tests:
