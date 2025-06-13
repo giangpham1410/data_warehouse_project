@@ -26,11 +26,11 @@ WITH
     SELECT
       CAST(supplier_transaction_key AS INTEGER) AS supplier_transaction_key
       , CAST(supplier_invoice_number AS STRING) AS supplier_invoice_number
+      , CAST(is_supplier_finalized AS BOOLEAN) AS is_supplier_finalized_boolean
       , CAST(amount_excluding_tax AS NUMERIC) AS amount_excluding_tax
       , CAST(tax_amount AS NUMERIC) AS tax_amount
       , CAST(transaction_amount AS NUMERIC) AS transaction_amount
       , CAST(outstanding_balance AS NUMERIC) AS outstanding_balance
-      , CAST(is_supplier_finalized AS BOOLEAN) AS is_supplier_finalized_boolean
       , CAST(transaction_date AS DATE) AS transaction_date
       , CAST(finalization_date AS DATE) AS finalization_date
       , CAST(supplier_key  AS INTEGER) AS supplier_key
@@ -40,5 +40,17 @@ WITH
     FROM fact_supplier_transaction__rename_column
 )
 
+, fact_supplier_transaction__convert_boolean AS (
+    SELECT
+      *
+      , CASE
+          WHEN is_supplier_finalized_boolean IS TRUE THEN 'Supplier Finalized'
+          WHEN is_supplier_finalized_boolean IS FALSE THEN 'Not Supplier Finalized'
+          WHEN is_supplier_finalized_boolean IS NULL THEN 'Undefined'
+          ELSE 'Invalid'
+        END AS is_supplier_finalized
+    FROM fact_supplier_transaction__cast_type
+)
+
 SELECT *
-FROM fact_supplier_transaction__cast_type
+FROM fact_supplier_transaction__convert_boolean
