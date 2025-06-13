@@ -7,9 +7,10 @@ WITH
 
 SELECT
   FARM_FINGERPRINT(
-    CONCAT(dim_is_finalized.is_finalized, '~'
-           , dim_payment_method.payment_method_key, '~'
-           , dim_transaction_type.transaction_type_key)
+    CONCAT(
+      dim_is_finalized.is_finalized, '~'
+      , dim_payment_method.payment_method_key, '~'
+      , dim_transaction_type.transaction_type_key)
   ) AS transaction_indicator_key
   , is_finalized
   , dim_payment_method.payment_method_key
