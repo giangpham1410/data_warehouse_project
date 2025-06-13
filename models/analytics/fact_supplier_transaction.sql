@@ -52,5 +52,36 @@ WITH
     FROM fact_supplier_transaction__cast_type
 )
 
-SELECT *
-FROM fact_supplier_transaction__convert_boolean
+, fact_supplier_transaction__handle_null AS (
+    SELECT
+      supplier_transaction_key
+      , COALESCE(supplier_invoice_number, 'Undefined') AS supplier_invoice_number
+      , is_supplier_finalized
+      , amount_excluding_tax
+      , tax_amount
+      , transaction_amount
+      , outstanding_balance
+      , transaction_date
+      , finalization_date
+      , COALESCE(supplier_key, 0) AS supplier_key
+      , COALESCE(transaction_type_key, 0) AS transaction_type_key
+      , COALESCE(purchase_order_key, 0) AS purchase_order_key
+      , COALESCE(payment_method_key, 0) AS payment_method_key
+    FROM fact_supplier_transaction__convert_boolean
+)
+
+SELECT
+  supplier_transaction_key
+  , supplier_invoice_number
+  , is_supplier_finalized
+  , amount_excluding_tax
+  , tax_amount
+  , transaction_amount
+  , outstanding_balance
+  , transaction_date
+  , finalization_date
+  , supplier_key
+  , transaction_type_key
+  , purchase_order_key
+  , payment_method_key
+FROM fact_supplier_transaction__handle_null
