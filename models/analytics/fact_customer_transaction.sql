@@ -42,8 +42,8 @@ WITH
     SELECT
       *
       , CASE
-          WHEN is_customer_finalized_boolean IS TRUE THEN 'Customer Finalized'
-          WHEN is_customer_finalized_boolean IS FALSE THEN 'Not Customer Finalized'
+          WHEN is_customer_finalized_boolean IS TRUE THEN 'Finalized'
+          WHEN is_customer_finalized_boolean IS FALSE THEN 'Not Finalized'
           WHEN is_customer_finalized_boolean IS NULL THEN 'Undefined'
           ELSE 'Invalid'
         END AS is_customer_finalized
