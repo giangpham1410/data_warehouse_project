@@ -69,7 +69,7 @@ WITH
 
 SELECT
   customer_transaction_key
-  , is_customer_finalized
+  --, is_customer_finalized
   , amount_excluding_tax
   , tax_amount
   , transaction_amount
@@ -77,7 +77,15 @@ SELECT
   , transaction_date
   , finalization_date
   , customer_key
-  , transaction_type_key
+  --, transaction_type_key
   , sales_invoice_key
-  , payment_method_key
+  --, payment_method_key
+
+  , FARM_FINGERPRINT(
+    CONCAT(
+      is_customer_finalized, '~'
+      , payment_method_key, '~'
+      , transaction_type_key
+    )
+  ) AS dim_transaction_indicator_key
 FROM fact_customer_transaction__handle_null
