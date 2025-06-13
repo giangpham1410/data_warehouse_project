@@ -43,7 +43,13 @@ models:
       - name: supplier_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_supplier')
+              field: supplier_key
 
       - name: transaction_indicator_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_transaction_indicator')
+              field: transaction_indicator_key
