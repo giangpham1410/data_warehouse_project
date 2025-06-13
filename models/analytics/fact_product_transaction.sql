@@ -18,5 +18,19 @@ WITH
     FROM fact_product_transaction__source
 )
 
+, fact_product_transaction__cast_type AS (
+    SELECT
+      CAST(product_transaction_key AS INTEGER) AS product_transaction_key
+      , CAST(quantity AS NUMERIC) AS quantity
+      , CAST(transaction_occurred_when AS DATE) AS transaction_occurred_when
+      , CAST(product_key AS INTEGER) AS product_key
+      , CAST(transaction_type_key AS INTEGER) AS transaction_type_key
+      , CAST(customer_key AS INTEGER) AS customer_key
+      , CAST(sales_invoice_key AS INTEGER) AS sales_invoice_key
+      , CAST(supplier_key AS INTEGER) AS supplier_key
+      , CAST(purchase_order_key AS INTEGER) AS purchase_order_key
+    FROM fact_product_transaction__rename_column
+)
+
 SELECT *
-FROM fact_product_transaction__rename_column
+FROM fact_product_transaction__cast_type
