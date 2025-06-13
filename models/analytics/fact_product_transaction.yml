@@ -27,15 +27,27 @@ models:
       - name: product_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
       
       - name: transaction_type_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_transaction_type')
+              field: transaction_type_key
       
       - name: customer_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
       
       - name: supplier_key
         tests:
           - not_null
+          - relationships:
+              to: ref('dim_supplier')
+              field: supplier_key
