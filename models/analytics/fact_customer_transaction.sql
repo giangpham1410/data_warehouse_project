@@ -14,9 +14,9 @@ WITH
       , outstanding_balance
       , transaction_date
       , finalization_date
+      , invoice_id AS sales_invoice_key
       , customer_id AS customer_key
       , transaction_type_id AS transaction_type_key
-      , invoice_id AS sales_invoice_key
       , payment_method_id AS payment_method_key
     FROM fact_customer_transaction__source
 )
@@ -31,9 +31,9 @@ WITH
       , CAST(outstanding_balance AS NUMERIC) AS outstanding_balance
       , CAST(transaction_date AS DATE) AS transaction_date
       , CAST(finalization_date AS DATE) AS finalization_date
+      , CAST(sales_invoice_key AS INTEGER) AS sales_invoice_key
       , CAST(customer_key AS INTEGER) AS customer_key
       , CAST(transaction_type_key AS INTEGER) AS transaction_type_key
-      , CAST(sales_invoice_key AS INTEGER) AS sales_invoice_key
       , CAST(payment_method_key AS INTEGER) AS payment_method_key
     FROM fact_customer_transaction__rename_column
 )
@@ -60,9 +60,9 @@ WITH
       , outstanding_balance
       , transaction_date
       , finalization_date
+      , sales_invoice_key
       , COALESCE(customer_key, 0) AS customer_key
       , COALESCE(transaction_type_key, 0) AS transaction_type_key
-      , COALESCE(sales_invoice_key, 0) AS sales_invoice_key
       , COALESCE(payment_method_key, 0) AS payment_method_key
     FROM fact_customer_transaction__convert_boolean
 )
@@ -76,11 +76,10 @@ SELECT
   , outstanding_balance
   , transaction_date
   , finalization_date
+  , sales_invoice_key
   , customer_key
   --, transaction_type_key
-  , sales_invoice_key
   --, payment_method_key
-
   , FARM_FINGERPRINT(
     CONCAT(
       is_customer_finalized, '~'
