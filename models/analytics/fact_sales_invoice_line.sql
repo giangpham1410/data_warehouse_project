@@ -64,7 +64,7 @@ SELECT
   , fact_sales_invoice_line.tax_amount
   , fact_sales_invoice_line.line_profit
   , fact_sales_invoice_line.extended_price
-  , fact_sales_invoice.is_credit_note
+  --, fact_sales_invoice.is_credit_note
   , fact_sales_invoice.total_invoice_dy_items
   , fact_sales_invoice.total_invoice_chiller_items
   , fact_sales_invoice.customer_purchase_order_number
@@ -74,16 +74,25 @@ SELECT
   , fact_sales_invoice.confirmed_received_by
 
   , fact_sales_invoice_line.product_key
-  , fact_sales_invoice_line.package_type_key
+  , fact_sales_invoice.sales_order_key
+  --, fact_sales_invoice_line.package_type_key
+
   , COALESCE(fact_sales_invoice.customer_key, -1) AS customer_key
   , COALESCE(fact_sales_invoice.bill_to_customer_key, -1) AS bill_to_customer_key
-  , COALESCE(fact_sales_invoice.sales_order_key, -1) AS sales_order_key
-  , COALESCE(fact_sales_invoice.delivery_method_key, -1) AS delivery_method_key
+  --, COALESCE(fact_sales_invoice.delivery_method_key, -1) AS delivery_method_key
   , COALESCE(fact_sales_invoice.contact_person_key, -1) AS contact_person_key
   , COALESCE(fact_sales_invoice.accounts_person_key, -1) AS accounts_person_key
   , COALESCE(fact_sales_invoice.salesperson_person_key, -1) AS salesperson_person_key
   , COALESCE(fact_sales_invoice.packed_by_person_key, -1) AS packed_by_person_key
 
   , fact_sales_invoice_line.sales_invoice_key
+
+  , FARM_FINGERPRINT(
+    CONCAT(
+      fact_sales_invoice.is_credit_note, '~'
+      , fact_sales_invoice.delivery_method_key, '~'
+      , fact_sales_invoice_line.package_type_key
+      )
+    ) AS sales_invoice_line_indicator_key
 FROM fact_sales_invoice_line__handle_null fact_sales_invoice_line
   LEFT JOIN {{ ref('stg_fact_sales_invoice') }} fact_sales_invoice ON fact_sales_invoice_line.sales_invoice_key = fact_sales_invoice.sales_invoice_key
