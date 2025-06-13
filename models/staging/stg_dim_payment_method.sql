@@ -18,5 +18,26 @@ WITH
     FROM dim_payment_method__rename_column
 )
 
-SELECT *
-FROM dim_payment_method__cast_type
+, dim_payment_method__add_undefined_record AS (
+    SELECT
+      payment_method_key
+      , payment_method_name
+    FROM dim_payment_method__cast_type
+
+    UNION ALL
+
+    SELECT
+      0 AS payment_method_key
+      , 'Undefined' AS payment_method_name
+    
+    UNION ALL
+
+    SELECT
+      -1 AS payment_method_key
+      , 'Invalid' AS payment_method_name
+)
+
+SELECT
+  payment_method_key
+  , payment_method_name
+FROM dim_payment_method__add_undefined_record
